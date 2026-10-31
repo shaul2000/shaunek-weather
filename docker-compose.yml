@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: shaunek
+      POSTGRES_USER: shaunek_app
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-local-dev-only-change-me}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backend/db/init.sql:/docker-entrypoint-initdb.d/001-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shaunek_app -d shaunek"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+  weather:
+    build: ./weather-service
+    environment:
+      PORT: 8001
+    expose:
+      - "8001"
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      NODE_ENV: development
+      PORT: 8080
+      DATABASE_URL: postgres://shaunek_app:${POSTGRES_PASSWORD:-local-dev-only-change-me}@db:5432/shaunek
+      SESSION_SECRET: ${SESSION_SECRET:-local-development-secret-change-this-before-use}
+      WEATHER_SERVICE_URL: http://weather:8001
+      FRONTEND_ORIGIN: http://localhost:8080
+      COOKIE_SECURE: "false"
+      COOKIE_SAME_SITE: lax
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      weather:
+        condition: service_started
+volumes:
+  pgdata:

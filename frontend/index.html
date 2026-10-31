@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Shaunek Weather — your world, one forecast ahead."
+    >
+    <title>Shaunek Weather</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./config.js" defer></script>
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./">Shaunek<span>Weather</span></a>
+      <nav>
+        <button id="auth-open" class="quiet" type="button">Sign in</button>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <p class="eyebrow">YOUR WORLD, ONE FORECAST AHEAD</p>
+        <h1>Weather, with a clearer view.</h1>
+        <p>Explore current conditions and the week ahead.</p>
+
+        <form id="search-form" class="search" novalidate>
+          <label class="sr-only" for="city">Search city</label>
+          <input
+            id="city"
+            value="Abuja"
+            minlength="2"
+            maxlength="80"
+            required
+            placeholder="Search a city"
+          >
+          <button type="submit">Search</button>
+        </form>
+
+        <p id="message" role="status" aria-live="polite"></p>
+      </section>
+
+      <section id="weather-panel" class="weather-panel" aria-live="polite">
+        <div class="loading">Loading forecast…</div>
+      </section>
+
+      <section class="account-panel">
+        <div>
+          <h2>Your saved places</h2>
+          <p>Sign in to save locations and find them again.</p>
+        </div>
+        <div id="saved-list"></div>
+      </section>
+    </main>
+
+    <dialog id="auth-dialog">
+      <div class="dialog-header">
+        <h2 id="auth-title">Sign in</h2>
+        <form method="dialog" class="dialog-close">
+          <button type="submit" aria-label="Close">×</button>
+        </form>
+      </div>
+
+      <form id="auth-form">
+        <label>
+          Email
+          <input id="email" type="email" maxlength="254" autocomplete="email" required>
+        </label>
+        <label>
+          Password
+          <input
+            id="password"
+            type="password"
+            minlength="12"
+            maxlength="128"
+            autocomplete="current-password"
+            required
+          >
+        </label>
+        <button id="auth-submit" type="submit">Sign in</button>
+      </form>
+
+      <p id="auth-message" role="status"></p>
+      <button id="auth-toggle" class="quiet" type="button">Create an account instead</button>
+    </dialog>
+
+    <footer>Weather data provided by Open-Meteo. Always follow official local weather alerts.</footer>
+  </body>
+</html>
