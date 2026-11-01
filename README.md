@@ -1,57 +1,98 @@
 # Shaunek Weather
 
-A security-conscious full-stack weather application starter.
+Shaunek Weather provides location-based forecasts in a clean, responsive interface. Search for a city, see current conditions and the three-day outlook, and save places to a personal account.
 
-## Architecture
-- `frontend/`: HTML, CSS and browser JavaScript.
-- `backend/`: Node.js + Express API, PostgreSQL persistence, Argon2id password hashing and server-side sessions.
-- `weather-service/`: Python + FastAPI service that queries Open-Meteo.
-- `docs/`: requirements, architecture, threat model and deployment notes.
+## Features
 
-The browser talks only to the Node API. Node calls the private Python weather service. The Python service is not intended to be exposed publicly.
+- Current conditions, hourly forecasts, and three-day forecasts for searched locations.
+- A live local clock for the searched location, including its date and time zone.
+- Eight featured locations on the home dashboard, with **View more locations** to browse up to 55 curated cities in distinct batches.
+- Optional accounts for saved places, profile details, and display preferences.
+- Country and time-zone selection during registration.
+- Weather data supplied by [WeatherAPI.com](https://www.weatherapi.com/), credited beside the forecast.
 
-## Requirements
-- Node.js 22 LTS or newer supported LTS, npm
-- Python 3.11+
-- PostgreSQL 15+
-- Git
+Weather information is for general use and is not an official alert or emergency service.
 
-## Local setup (recommended: Docker Compose)
-1. Copy `.env.example` to `.env` in the project root and replace `SESSION_SECRET` with a long random value.
-2. Run `docker compose up --build`.
-3. Open http://localhost:8080.
+## Run locally
 
-Create a strong random session secret with:
-`python3 -c "import secrets; print(secrets.token_urlsafe(48))"`
+### Requirements
 
-The compose file starts PostgreSQL, the Python service and Node API. The frontend is served by the Node API, keeping local requests same-origin.
+- Node.js 22 or later
+- Python 3.11 or later
+- PostgreSQL 15 or later
+- A WeatherAPI.com key for forecast requests
 
-## Local setup without Docker
-1. Start PostgreSQL and create a database/user matching `backend/.env.example`.
-2. In `weather-service/`: create a virtual environment, install `requirements.txt`, then run `uvicorn app.main:app --host 127.0.0.1 --port 8001`.
-3. In `backend/`: copy `.env.example` to `.env`, run `npm install`, then `npm run dev`.
-4. Open http://localhost:8080.
+### Setup
 
-## API overview
-- `GET /api/health`
-- `GET /api/csrf`
-- `POST /api/auth/register`
-- `POST /api/auth/login`
-- `POST /api/auth/logout`
-- `GET /api/auth/me`
-- `GET /api/weather?city=Abuja`
-- `GET /api/locations`
-- `POST /api/locations` `{ "city": "Abuja" }`
-- `DELETE /api/locations/:id`
+1. Create a local PostgreSQL database. Copy `backend/.env.example` to `backend/.env` only if the destination does not already exist. Set `DATABASE_URL` and a unique `SESSION_SECRET`.
+2. Initialize the database from the repository root:
 
-All mutating browser requests require the session-bound `X-CSRF-Token` header. Authentication is cookie/session based; no JWT is stored in local storage.
+   ```sh
+   set -a
+   . backend/.env
+   set +a
+   psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f backend/db/init.sql
+   ```
 
-## Deployment outline
-- GitHub: push this repository.
-- Render: deploy PostgreSQL, the Python service (private service), and the Node web service. Set environment variables from `.env.example`; set `WEATHER_SERVICE_URL` to the internal Python service URL.
-- Vercel: this starter serves the frontend from Node for same-origin cookies and CSRF. For a separate Vercel frontend, set `FRONTEND_ORIGIN` on Node to the exact Vercel origin and configure secure cross-site cookies (`COOKIE_SAME_SITE=none`, `COOKIE_SECURE=true`). Deploy `frontend/` as static output and set `API_BASE_URL` in `frontend/config.js` to the Node API URL. Review `docs/deployment.md` before doing this; cross-site cookies can be blocked by browser privacy settings.
+3. Configure and start the weather service:
 
-Do not commit `.env`, database credentials, API secrets or production session secrets. Configure production secrets in the hosting provider dashboard. Before public launch, add automated tests, monitoring, backups, provider terms review and an independent security review.
+   ```sh
+   cd weather-service
+   python3 -m venv .venv
+   . .venv/bin/activate
+   pip install -r requirements.txt
+   if [ ! -e .env ]; then cp .env.example .env; fi
+   # Set WEATHERAPI_KEY in .env before loading it.
+   set -a
+   . .env
+   set +a
+   uvicorn app.main:app --host 127.0.0.1 --port 8001
+   ```
 
-## Current scope
-This is an MVP foundation, not a Weather Underground clone. It does not yet include radar maps, station networks, historical archives, alerts or severe-weather notification delivery. Open-Meteo data availability and terms must be reviewed for the intended production use.
+4. In a second terminal, configure and start the API:
+
+   ```sh
+   cd backend
+   if [ ! -e .env ]; then cp .env.example .env; fi
+   # Set DATABASE_URL and a unique SESSION_SECRET in .env.
+   npm ci
+   npm run dev
+   ```
+
+5. Open [http://localhost:8080](http://localhost:8080).
+
+Keep local `.env` files out of source control. The WeatherAPI.com key belongs only in the weather service environment; never put it in browser code or public configuration.
+
+## Project structure
+
+- `frontend/` — public weather experience and account pages.
+- `backend/` — Express API, account sessions, and PostgreSQL access.
+- `weather-service/` — private FastAPI service for provider requests and forecast normalization.
+- `docs/` — product requirements, architecture, development, and deployment guidance.
+
+The browser communicates with the Node API. The Node API communicates with PostgreSQL and the private weather service. Do not expose the weather service directly to the public internet.
+
+## Deployment
+
+The deployment guide covers the recommended Vercel frontend and Render API/database/weather-service setup, required environment settings, and release checks: [docs/deployment.md](docs/deployment.md).
+
+Before deploying, replace the API hostname placeholder in `frontend/vercel.json` with the actual Render API hostname. Production also requires HTTPS, secure session settings, and secrets configured in the hosting provider rather than committed to the repository.
+
+## Development and validation
+
+The local development workflow and release checks are in [docs/development.md](docs/development.md).
+
+To run the weather-service unit tests:
+
+```sh
+cd weather-service
+.venv/bin/python -m unittest discover -s tests -v
+```
+
+Account, password-recovery, and email-change flows require a database; email delivery additionally requires SMTP configuration. Use disposable test accounts and databases for integration checks.
+
+## Current limitations
+
+- City-name searches use the weather provider's first result when multiple locations share a name.
+- Radar, historical observations, personal weather stations, and weather-alert delivery are not included.
+- Email-dependent account features require a working SMTP service.

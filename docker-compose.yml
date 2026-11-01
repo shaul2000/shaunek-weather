@@ -17,6 +17,7 @@ services:
     build: ./weather-service
     environment:
       PORT: 8001
+      WEATHERAPI_KEY: ${WEATHERAPI_KEY:-}
     expose:
       - "8001"
   api:
@@ -28,10 +29,19 @@ services:
       PORT: 8080
       DATABASE_URL: postgres://shaunek_app:${POSTGRES_PASSWORD:-local-dev-only-change-me}@db:5432/shaunek
       SESSION_SECRET: ${SESSION_SECRET:-local-development-secret-change-this-before-use}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+      ADMIN_BOOTSTRAP_TOKEN: ${ADMIN_BOOTSTRAP_TOKEN:-}
       WEATHER_SERVICE_URL: http://weather:8001
       FRONTEND_ORIGIN: http://localhost:8080
+      PUBLIC_APP_URL: ${PUBLIC_APP_URL:-http://localhost:8080}
       COOKIE_SECURE: "false"
       COOKIE_SAME_SITE: lax
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM: ${SMTP_FROM:-}
     ports:
       - "8080:8080"
     depends_on:

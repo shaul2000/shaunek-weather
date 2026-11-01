@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Confirm your Shaunek Weather email address.">
+    <title>Confirm Email | Shaunek Weather</title>
+    <link rel="icon" href="./favicon.jpeg" type="image/jpeg">
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./config.js" defer></script>
+    <script type="module" src="./api.js" defer></script>
+    <script type="module" src="./settings.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./index.html" aria-label="Shaunek Weather home">
+        <img src="./logo.jpg" class="brand-logo" alt="Shaunek Weather">
+      </a>
+      <nav class="auth-nav" aria-label="Account">
+        <a class="nav-link" href="./index.html">Weather</a>
+      </nav>
+      <div class="accent-bar" aria-hidden="true"></div>
+    </header>
+
+    <main class="auth-page">
+      <section class="auth-card">
+        <p class="auth-kicker">EMAIL VERIFICATION</p>
+        <h1>Confirm your email</h1>
+        <p class="auth-intro">Confirm this address to finish updating your Shaunek Weather account.</p>
+        <form id="email-verification-form">
+          <button id="confirm-email-button" type="submit" disabled>Confirm email address</button>
+        </form>
+        <p id="verification-message" role="status" aria-live="polite"></p>
+        <p id="verification-return" class="auth-alt" hidden><a href="./account.html">Return to my account</a></p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-branding">
+          <a class="footer-brand" href="./index.html">Shaunek Weather</a>
+          <p>A clearer forecast for wherever life takes you.</p>
+        </div>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="./index.html">Weather</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>For official alerts, follow your local weather authorities.</span>
+      </div>
+    </footer>
+  </body>
+</html>

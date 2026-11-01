@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="View your Shaunek Weather account details.">
+    <title>My Account | Shaunek Weather</title>
+    <link rel="icon" href="./favicon.jpeg" type="image/jpeg">
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./config.js" defer></script>
+    <script type="module" src="./api.js" defer></script>
+    <script type="module" src="./account.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./index.html" aria-label="Shaunek Weather home">
+        <img src="./logo.jpg" class="brand-logo" alt="Shaunek Weather">
+      </a>
+      <nav class="auth-nav" aria-label="Account">
+        <a class="nav-link" href="./index.html">Weather</a>
+        <a class="nav-link" href="./settings.html">Settings</a>
+        <button id="signout-button" class="nav-link" type="button" disabled>Sign out</button>
+      </nav>
+      <div class="accent-bar" aria-hidden="true"></div>
+    </header>
+
+    <main class="settings-page account-page">
+      <div class="settings-heading">
+        <p class="eyebrow">YOUR ACCOUNT</p>
+        <h1>My account</h1>
+        <p>Review the details saved to your Shaunek Weather account.</p>
+      </div>
+
+      <p id="account-message" class="settings-message" role="status" aria-live="polite">
+        Loading your account…
+      </p>
+
+      <section id="account-details" class="settings-card" hidden>
+        <div class="settings-card-heading">
+          <div>
+            <p class="section-label">PROFILE</p>
+            <h2>Your details</h2>
+          </div>
+        </div>
+        <dl class="account-details">
+          <div><dt>Name</dt><dd id="account-name"></dd></div>
+          <div><dt>Email address</dt><dd id="account-email"></dd></div>
+          <div id="pending-email-row" hidden><dt>Email change</dt><dd id="account-pending-email"></dd></div>
+          <div><dt>Country</dt><dd id="account-country"></dd></div>
+          <div><dt>Region / State / Province</dt><dd id="account-region"></dd></div>
+          <div><dt>Time zone</dt><dd id="account-timezone"></dd></div>
+          <div><dt>Account created</dt><dd id="account-created"></dd></div>
+        </dl>
+      </section>
+
+      <section id="account-edit-prompt" class="settings-card account-edit-prompt" hidden>
+        <div>
+          <p class="section-label">NEED TO MAKE A CHANGE?</p>
+          <h2>Edit your details</h2>
+          <p>Update your name, location, email, password, or forecast preferences.</p>
+        </div>
+        <a class="settings-action" href="./settings.html#profile-form">Edit my details</a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-branding">
+          <a class="footer-brand" href="./index.html">Shaunek Weather</a>
+          <p>A clearer forecast for wherever life takes you.</p>
+        </div>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="./index.html">Weather</a>
+          <a href="./account.html">My account</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>For official alerts, follow your local weather authorities.</span>
+      </div>
+    </footer>
+  </body>
+</html>

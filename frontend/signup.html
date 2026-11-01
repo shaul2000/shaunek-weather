@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Create a Shaunek Weather member account.">
+    <title>Sign Up | Shaunek Weather</title>
+    <link rel="icon" href="./favicon.jpeg" type="image/jpeg">
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./config.js" defer></script>
+    <script type="module" src="./api.js" defer></script>
+    <script type="module" src="./auth.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./index.html" aria-label="Shaunek Weather home">
+        <img src="./logo.jpg" class="brand-logo" alt="Shaunek Weather">
+      </a>
+      <nav class="auth-nav" aria-label="Account">
+        <a id="login-link" class="nav-link" href="./login.html">Log In</a>
+        <a id="signup-link" class="nav-cta" href="./signup.html">Sign Up</a>
+        <a id="nav-account-link" class="nav-link" href="./account.html" hidden>My account</a>
+        <button id="signout-button" class="nav-link" type="button" hidden disabled>Sign out</button>
+      </nav>
+      <div class="accent-bar" aria-hidden="true"></div>
+    </header>
+
+    <main class="auth-page">
+      <section class="auth-card">
+        <p class="auth-kicker">GET STARTED</p>
+        <h1>Create your account</h1>
+        <p class="auth-intro">Save the places you care about and get your forecast at a glance.</p>
+        <form id="signup-form" data-auth-mode="signup">
+          <label for="first-name">First Name</label>
+          <input
+            id="first-name"
+            type="text"
+            maxlength="100"
+            autocomplete="given-name"
+            required
+          >
+
+          <label for="last-name">Last Name</label>
+          <input
+            id="last-name"
+            type="text"
+            maxlength="100"
+            autocomplete="family-name"
+            required
+          >
+
+          <label for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            maxlength="254"
+            autocomplete="email"
+            required
+          >
+
+          <label for="country">Country</label>
+          <select id="country" name="country" required>
+            <option value="">Select your country</option>
+          </select>
+
+          <label for="region">Region / State / Province <span class="optional-label">(optional)</span></label>
+          <input
+            id="region"
+            name="region"
+            type="text"
+            maxlength="100"
+            autocomplete="address-level1"
+          >
+
+          <label for="timezone">Time zone</label>
+          <select id="timezone" name="timezone" required>
+            <option value="">Select your time zone</option>
+          </select>
+
+          <label for="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            minlength="12"
+            maxlength="128"
+            autocomplete="new-password"
+            required
+          >
+
+          <label for="confirm-password">Confirm Password</label>
+          <input
+            id="confirm-password"
+            type="password"
+            minlength="12"
+            maxlength="128"
+            autocomplete="new-password"
+            required
+          >
+
+          <button id="auth-submit" type="submit" disabled>Create account</button>
+        </form>
+        <p id="auth-message" role="status" aria-live="polite"></p>
+        <p class="auth-alt">Already have an account? <a href="./login.html">Log in</a></p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-branding">
+          <a class="footer-brand" href="./index.html">Shaunek Weather</a>
+          <p>A clearer forecast for wherever life takes you.</p>
+        </div>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="./index.html">Weather</a>
+          <a href="./account.html">My account</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>Made for the places that matter to you.</span>
+        <span>For official alerts, follow your local weather authorities.</span>
+      </div>
+    </footer>
+  </body>
+</html>

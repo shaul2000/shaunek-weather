@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Manage your Shaunek Weather profile and preferences.">
+    <title>Settings | Shaunek Weather</title>
+    <link rel="icon" href="./favicon.jpeg" type="image/jpeg">
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./config.js" defer></script>
+    <script type="module" src="./api.js" defer></script>
+    <script type="module" src="./settings.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./index.html" aria-label="Shaunek Weather home">
+        <img src="./logo.jpg" class="brand-logo" alt="Shaunek Weather">
+      </a>
+      <nav class="auth-nav" aria-label="Account">
+        <a class="nav-link" href="./index.html">Weather</a>
+        <a class="nav-link" href="./account.html">My account</a>
+        <button id="signout-button" class="nav-link" type="button" disabled>Sign out</button>
+      </nav>
+      <div class="accent-bar" aria-hidden="true"></div>
+    </header>
+
+    <main class="settings-page">
+      <div class="settings-heading">
+        <p class="eyebrow">YOUR ACCOUNT</p>
+        <h1>Settings</h1>
+        <p>Manage your profile, security, and forecast preferences.</p>
+      </div>
+
+      <section class="settings-card">
+        <div class="settings-card-heading">
+          <div>
+            <p class="section-label">PROFILE</p>
+            <h2>Your details</h2>
+          </div>
+          <p>Update how your account appears.</p>
+        </div>
+        <form id="profile-form" class="settings-form">
+          <label for="first-name">First name</label>
+          <input id="first-name" name="firstName" maxlength="100" autocomplete="given-name" required>
+          <label for="last-name">Last name</label>
+          <input id="last-name" name="lastName" maxlength="100" autocomplete="family-name" required>
+          <label for="country">Country</label>
+          <select id="country" name="country" required>
+            <option value="">Select your country</option>
+          </select>
+          <label for="region">Region / State / Province <span class="optional-label">(optional)</span></label>
+          <input id="region" name="region" maxlength="100" autocomplete="address-level1">
+          <label for="timezone">Time zone</label>
+          <select id="timezone" name="timezone" required>
+            <option value="">Select your time zone</option>
+          </select>
+          <label for="current-email">Current email</label>
+          <input id="current-email" type="email" readonly>
+          <button type="submit">Save profile</button>
+        </form>
+        <p id="profile-message" class="settings-message" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="settings-card">
+        <div class="settings-card-heading">
+          <div>
+            <p class="section-label">EMAIL ADDRESS</p>
+            <h2>Change your email</h2>
+          </div>
+          <p>We’ll apply the change after you confirm the new address.</p>
+        </div>
+        <p id="pending-email" class="pending-email" hidden></p>
+        <form id="email-form" class="settings-form">
+          <label for="new-email">New email address</label>
+          <input id="new-email" type="email" maxlength="254" autocomplete="email" required>
+          <label for="email-current-password">Current password</label>
+          <input id="email-current-password" type="password" maxlength="128" autocomplete="current-password" required>
+          <button type="submit">Send verification link</button>
+        </form>
+        <p id="email-message" class="settings-message" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="settings-card">
+        <div class="settings-card-heading">
+          <div>
+            <p class="section-label">SECURITY</p>
+            <h2>Update your password</h2>
+          </div>
+          <p>Use at least 12 characters. Other active sessions will be signed out.</p>
+        </div>
+        <form id="password-form" class="settings-form">
+          <label for="password-current">Current password</label>
+          <input id="password-current" type="password" maxlength="128" autocomplete="current-password" required>
+          <label for="password-new">New password</label>
+          <input id="password-new" type="password" minlength="12" maxlength="128" autocomplete="new-password" required>
+          <label for="password-confirm">Confirm new password</label>
+          <input id="password-confirm" type="password" minlength="12" maxlength="128" autocomplete="new-password" required>
+          <button type="submit">Update password</button>
+        </form>
+        <p id="password-message" class="settings-message" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="settings-card">
+        <div class="settings-card-heading">
+          <div>
+            <p class="section-label">DISPLAY</p>
+            <h2>App preferences</h2>
+          </div>
+          <p>These preferences are saved in this browser.</p>
+        </div>
+        <div class="preference-grid">
+          <label for="theme-setting">Appearance
+            <select id="theme-setting">
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+            </select>
+          </label>
+          <label for="temperature-setting">Temperature
+            <select id="temperature-setting">
+              <option value="C">Celsius (°C)</option>
+              <option value="F">Fahrenheit (°F)</option>
+            </select>
+          </label>
+          <label for="wind-setting">Wind speed
+            <select id="wind-setting">
+              <option value="km/h">Kilometres per hour</option>
+              <option value="mph">Miles per hour</option>
+            </select>
+          </label>
+        </div>
+        <p id="preference-message" class="settings-message" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="settings-card saved-settings">
+        <div>
+          <p class="section-label">SAVED PLACES</p>
+          <h2>Your locations</h2>
+          <p>Manage the places you’ve saved from the weather page.</p>
+        </div>
+        <a class="settings-action" href="./index.html#saved-places">Manage saved places</a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-branding">
+          <a class="footer-brand" href="./index.html">Shaunek Weather</a>
+          <p>A clearer forecast for wherever life takes you.</p>
+        </div>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="./index.html">Weather</a>
+          <a href="./account.html">My account</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>For official alerts, follow your local weather authorities.</span>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -5,87 +5,146 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta
       name="description"
-      content="Shaunek Weather — your world, one forecast ahead."
+      content="Check current conditions and a three-day forecast for cities around the world with Shaunek Weather. Search a location and save the places you care about."
     >
-    <title>Shaunek Weather</title>
+    <meta name="theme-color" content="#111111">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Shaunek Weather">
+    <meta property="og:title" content="Shaunek Weather | Local Forecasts &amp; 3-Day Weather">
+    <meta
+      property="og:description"
+      content="Check current conditions and a three-day forecast for cities around the world. Search and save the places you care about."
+    >
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Shaunek Weather | Local Forecasts &amp; 7-Day Weather">
+    <meta
+      name="twitter:description"
+      content="Check current conditions and a three-day forecast for cities around the world."
+    >
+    <link rel="canonical" href="./">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Shaunek Weather",
+        "description": "Check current conditions and a three-day forecast for cities around the world, and save the places you care about.",
+        "applicationCategory": "Weather",
+        "operatingSystem": "Any"
+      }
+    </script>
+    <title>Shaunek Weather | Local Forecasts &amp; 3-Day Weather</title>
+    <link rel="icon" href="./favicon.jpeg" type="image/jpeg">
     <link rel="stylesheet" href="./styles.css">
     <script src="./config.js" defer></script>
-    <script src="./app.js" defer></script>
+    <script type="module" src="./api.js" defer></script>
+    <script type="module" src="./app.js" defer></script>
   </head>
   <body>
     <header class="topbar">
-      <a class="brand" href="./">Shaunek<span>Weather</span></a>
-      <nav>
-        <button id="auth-open" class="quiet" type="button">Sign in</button>
+      <a class="brand" href="./index.html" aria-label="Shaunek Weather home">
+        <img src="./logo.jpg" class="brand-logo" alt="Shaunek Weather">
+      </a>
+      <nav class="auth-nav" aria-label="Account">
+        <a id="login-link" class="nav-link" href="./login.html">Log In</a>
+        <a id="signup-link" class="nav-cta" href="./signup.html">Sign Up</a>
+        <a id="account-link" class="nav-link" href="./account.html" hidden>My account</a>
+        <a id="admin-link" class="nav-link" href="./admin.html" hidden>Admin</a>
+        <button id="signout-button" class="nav-link" type="button" hidden disabled>Sign out</button>
       </nav>
+      <div class="accent-bar" aria-hidden="true"></div>
     </header>
+
+    <div class="utility-bar">
+      <span class="utility-copy">Find conditions for any city</span>
+      <form id="search-form" class="search">
+        <label class="sr-only" for="city">Search city</label>
+        <svg
+          class="search-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-4-4"></path>
+        </svg>
+        <input
+          id="city"
+          value=""
+          minlength="2"
+          maxlength="80"
+          required
+          placeholder="Search a city or country"
+        >
+        <button type="submit">Search</button>
+      </form>
+      <a id="settings-link" class="settings-shortcut" href="./account.html" aria-label="My account" title="My account" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.6 2.77-.08-.02a1.7 1.7 0 0 0-1.76.53l-.05.07h-3.2l-.03-.08a1.7 1.7 0 0 0-1.38-1.15l-.09-.01-1.6-2.77.05-.07A1.7 1.7 0 0 0 10 14.4l-.08-.04v-3.2l.08-.03a1.7 1.7 0 0 0 1.15-1.38l.01-.09 2.77-1.6.07.05a1.7 1.7 0 0 0 1.88.34l.06-.06 2.77 1.6-.02.08a1.7 1.7 0 0 0 .53 1.76l.07.05v3.2l-.08.03A1.7 1.7 0 0 0 19.4 15Z"></path>
+        </svg>
+      </a>
+    </div>
 
     <main class="container">
       <section class="hero">
-        <p class="eyebrow">YOUR WORLD, ONE FORECAST AHEAD</p>
-        <h1>Weather, with a clearer view.</h1>
-        <p>Explore current conditions and the week ahead.</p>
-
-        <form id="search-form" class="search" novalidate>
-          <label class="sr-only" for="city">Search city</label>
-          <input
-            id="city"
-            value="Abuja"
-            minlength="2"
-            maxlength="80"
-            required
-            placeholder="Search a city"
-          >
-          <button type="submit">Search</button>
-        </form>
-
+        <p class="eyebrow">SHAUNEK WEATHER</p>
+        <h1>Weather for wherever you are.</h1>
+        <p>Live conditions from cities around the world, with the forecast details you need.</p>
         <p id="message" role="status" aria-live="polite"></p>
       </section>
 
-      <section id="weather-panel" class="weather-panel" aria-live="polite">
-        <div class="loading">Loading forecast…</div>
+      <section class="global-weather" aria-labelledby="global-weather-heading">
+        <div class="global-weather-heading">
+          <div>
+            <p class="section-label">AROUND THE WORLD</p>
+            <h2 id="global-weather-heading">Weather right now</h2>
+          </div>
+          <p id="featured-status" role="status" aria-live="polite">Loading current conditions…</p>
+        </div>
+        <div id="featured-grid" class="featured-grid" aria-live="polite">
+          <div class="featured-loading">Loading global conditions…</div>
+        </div>
+        <div class="featured-actions">
+          <button id="featured-more" class="secondary-button" type="button" hidden>
+            View more locations
+          </button>
+        </div>
+        <p class="weather-attribution">
+          Weather data by
+          <a href="https://www.weatherapi.com/" target="_blank" rel="noopener noreferrer">WeatherAPI.com</a>
+        </p>
       </section>
 
-      <section class="account-panel">
-        <div>
+      <section id="weather-panel" class="weather-panel" aria-live="polite" hidden></section>
+
+      <section id="saved-places" class="account-panel">
+        <div class="saved-heading">
+          <p class="section-label">YOUR PLACES</p>
           <h2>Your saved places</h2>
-          <p>Sign in to save locations and find them again.</p>
+          <p>Keep the places you check most close at hand.</p>
         </div>
         <div id="saved-list"></div>
       </section>
     </main>
 
-    <dialog id="auth-dialog">
-      <div class="dialog-header">
-        <h2 id="auth-title">Sign in</h2>
-        <form method="dialog" class="dialog-close">
-          <button type="submit" aria-label="Close">×</button>
-        </form>
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-branding">
+          <a class="footer-brand" href="./index.html">Shaunek Weather</a>
+          <p>A clearer forecast for wherever life takes you.</p>
+        </div>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="./index.html">Weather</a>
+          <a href="./account.html">My account</a>
+        </nav>
       </div>
-
-      <form id="auth-form">
-        <label>
-          Email
-          <input id="email" type="email" maxlength="254" autocomplete="email" required>
-        </label>
-        <label>
-          Password
-          <input
-            id="password"
-            type="password"
-            minlength="12"
-            maxlength="128"
-            autocomplete="current-password"
-            required
-          >
-        </label>
-        <button id="auth-submit" type="submit">Sign in</button>
-      </form>
-
-      <p id="auth-message" role="status"></p>
-      <button id="auth-toggle" class="quiet" type="button">Create an account instead</button>
-    </dialog>
-
-    <footer>Weather data provided by Open-Meteo. Always follow official local weather alerts.</footer>
+      <div class="footer-bottom">
+        <span>Made for the places that matter to you.</span>
+        <span>For official alerts, follow your local weather authorities.</span>
+      </div>
+    </footer>
   </body>
 </html>

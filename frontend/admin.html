@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Administrator account overview and operating instructions.">
+    <title>Admin | Shaunek Weather</title>
+    <link rel="icon" href="./favicon.jpeg" type="image/jpeg">
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./config.js" defer></script>
+    <script type="module" src="./api.js" defer></script>
+    <script type="module" src="./admin.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./index.html" aria-label="Shaunek Weather home">
+        <img src="./logo.jpg" class="brand-logo" alt="Shaunek Weather">
+      </a>
+      <nav class="auth-nav" aria-label="Administrator">
+        <a class="nav-link" href="./index.html">Weather</a>
+        <a class="nav-link" href="./account.html">My account</a>
+      </nav>
+      <div class="accent-bar" aria-hidden="true"></div>
+    </header>
+
+    <main class="settings-page admin-page">
+      <div class="settings-heading">
+        <p class="eyebrow">PRIVATE ADMIN AREA</p>
+        <h1>Administrator</h1>
+        <p>Review account registrations and keep the service healthy.</p>
+        <p class="admin-identity">Administrator username: <strong id="admin-username">shauAdmin</strong> (fixed)</p>
+      </div>
+
+      <p id="admin-message" class="settings-message" role="status" aria-live="polite">Checking administrator access…</p>
+
+      <section id="admin-content" hidden>
+        <section class="settings-card">
+          <div class="settings-card-heading">
+            <div>
+              <p class="section-label">ACCOUNTS</p>
+              <h2>Registered users</h2>
+            </div>
+            <p id="user-count">Loading accounts…</p>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Signed up</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody id="user-list"></tbody>
+            </table>
+          </div>
+          <div class="admin-pagination">
+            <button id="previous-page" class="settings-action" type="button" disabled>Previous</button>
+            <span id="page-status" aria-live="polite"></span>
+            <button id="next-page" class="settings-action" type="button" disabled>Next</button>
+          </div>
+        </section>
+
+        <section class="settings-card">
+          <div class="settings-card-heading">
+            <div>
+              <p class="section-label">OPERATING NOTES</p>
+              <h2>Admin instructions</h2>
+            </div>
+          </div>
+          <ul class="admin-instructions">
+            <li>This page shows names, email addresses, signup times, and account status—not passwords, reset tokens, or session secrets.</li>
+            <li>Block an account only when necessary. Blocking prevents sign-in and ends the user's active sessions; you can unblock the account here.</li>
+            <li>The app continues serving weather and account requests when you are signed out. Admin access is only needed for oversight.</li>
+            <li>Keep the administrator login private, use a unique strong password, and sign out on shared devices.</li>
+            <li>The sole administrator must have the database admin role and an email matching <code>ADMIN_EMAIL</code>. Provision it with the private bootstrap token; an email match alone does not grant access. Never put either setting in frontend configuration. The administrator username is always <code>shauAdmin</code>.</li>
+            <li>If you change the administrator account's email, update <code>ADMIN_EMAIL</code> in the deployment environment too, or admin access will stop working.</li>
+            <li>Use the hosting provider's secret manager for API keys and credentials. Rotate anything that may have been exposed.</li>
+            <li>Before releases, check service health, backups, logs, and the deployment checklist in the project documentation.</li>
+          </ul>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>

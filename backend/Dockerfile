@@ -2,7 +2,7 @@ FROM node:22-bookworm-slim
 WORKDIR /app
 COPY backend/package*.json ./backend/
 WORKDIR /app/backend
-RUN npm install --omit=dev
+RUN npm ci --omit=dev
 COPY backend/src ./src
 COPY backend/db ./db
 COPY frontend ../frontend
