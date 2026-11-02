@@ -12,6 +12,8 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 import httpx
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Query, Request
+import hmac
+from fastapi.responses import JSONResponse
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
@@ -106,6 +108,18 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+SERVICE_SECRET = os.environ.get("WEATHER_SERVICE_SECRET", "")
+
+@app.middleware("http")
+async def require_service_secret(request: Request, call_next):
+    if request.url.path == "/health":
+        return await call_next(request)
+    if not SERVICE_SECRET:
+        return JSONResponse({"error": "service misconfigured"}, status_code=500)
+    supplied = request.headers.get("x-internal-secret", "")
+    if not hmac.compare_digest(supplied, SERVICE_SECRET):
+        return JSONResponse({"error": "unauthorized"}, status_code=401)
+    return await call_next(request)
 
 def _error_code(payload: Any) -> int | None:
     if not isinstance(payload, dict):
